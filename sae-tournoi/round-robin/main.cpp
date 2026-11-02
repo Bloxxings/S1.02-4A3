@@ -1,69 +1,58 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
-struct joueur {
-    string nom;
-    int choix;
-    int points;
+struct participant {
+    string prenom;
+    int choix = 0;
+    int points = 0;
 };
-
-// Lit une ligne en sautant les commentaires '#'
-string litLigne() {
-    // à écrire
-}
-
-void litJoueurs(vector<joueur> & joueurs)
-{
-    unsigned int nombre_joueurs = 0;
-    cerr << "Entrez le nombre de joueurs" << endl;
-    cin >> nombre_joueurs;
-    joueurs.resize(nombre_joueurs);
-    for (unsigned int i = 0; i < nombre_joueurs; i = i+1)
-    {
-        cerr << "Entrez le prénom du "<< i+1 << " joueur" << endl;
-        cin >> joueurs[i].nom;
-        cerr << "Entrez la réponse du "<< i+1 << " joueur" << endl;
-        cin >> joueurs[i].choix;
-        while (joueurs[i].choix < 1 || joueurs[i].choix > 3)
-        {
-            cerr << "Veuillez choisir un chiffre entre 1 et 3 "<< endl;
-            cin >> joueurs[i].choix;
-        }
-    }
-}
-
-// Renvoie 1 si a gagne, 2 si b gagne, 0 si égalité
-int resultatMatch(int a, int b) {
-    // à écrire
-}
-
-// Fait jouer chaque paire une fois et ajoute les points
-void joueTournoi(vector<joueur> & joueurs) {
-    // à écrire
-}
-
-// Compare deux joueurs pour le tri (points, puis départage)
-bool compareJoueurs(const joueur & a, const joueur & b) {
-    // à écrire
-}
-
-// Affiche "rang:nom" pour chaque joueur
-void affiche(const vector<joueur> & joueurs) {
-    // à écrire
-}
 
 int main()
 {
-    vector<joueur> joueurs;
-    litJoueurs(joueurs);
-    if (joueurs.size() < 2) {
-        return 1;
+    vector<participant> tab; //crée la liste de participant
+    int n = 0;
+
+    while (n < 2)
+    {
+        cerr << "Nombre de participants (2 minimum) : " << endl;
+        cin >> n;
+        while (!cin) //tant que l'entrée du cin est différente de ce qui est attendu
+        {
+            if (cin.eof()) return 1;
+            cerr << "Veuillez entrer un nombre valide (2 minimum)" << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cin >> n;
+        }
     }
-    joueTournoi(joueurs);
-    stable_sort(joueurs.begin(), joueurs.end(), compareJoueurs);
-    affiche(joueurs);
+
+    tab.resize(n); //on resize le tableau aux nombre de participants
+    for (int i = 0; i < n; i = i+1)
+    {
+        // Prénom
+        cerr << "Prenom du participant " << i+1 << " : " << endl;
+        cin >> tab[i].prenom;
+
+        // Choix
+        while (tab[i].choix < 1 || tab[i].choix > 3)
+        {
+            cerr << "Choix (1 pierre, 2 feuille, 3 ciseaux) : " << endl;
+            cin >> tab[i].choix;
+            while (!cin)
+            {
+                if (cin.eof()) return 1;
+                cerr << "Veuillez entrer un chiffre valide (1 pierre, 2 feuille, 3 ciseaux)" << endl;
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cin >> tab[i].choix;
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i = i+1)
+        cout << tab[i].prenom << " " << tab[i].choix << endl;
+
     return 0;
 }
