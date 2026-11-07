@@ -1,0 +1,10 @@
+# Fichiers macOS et réglages locaux de Qt Creator
+**/.DS_Store
+**/.qtcreator/
+**/*.pro.user
+
+# Fichiers de compilation et exécutables générés
+**/build/
+**/*.o
+**/suisse
+**/tournoi
