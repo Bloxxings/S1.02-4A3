@@ -8,3 +8,5 @@
 **/*.o
 **/suisse
 **/tournoi
+**/lanceur_des_des
+**/pile_ou_face
