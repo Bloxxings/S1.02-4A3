@@ -1,0 +1,20 @@
+# 4 joueurs
+Joueur:Alice
+Joueur:Bilal
+Joueur:Chloe
+Joueur:David
+
+# 3 rondes × 2 matchs × 2 actions
+
+Action:1
+Action:2
+Action:0
+Action:1
+Action:2
+Action:0
+Action:2
+Action:1
+Action:0
+Action:2
+Action:1
+Action:0
