@@ -1,7 +1,7 @@
 # Lanceur de dés
 
-Le projet Qt Creator est `lanceur_des_des.pro` et le code à compléter est dans `main.cpp`.
+J’ai préparé ce dossier pour mon jeu de dés. Le projet à ouvrir dans Qt Creator s’appelle `lanceur_des_des.pro`, et le fichier où je vais écrire le programme est `main.cpp`.
 
-Le dossier `tests/` contient trois emplacements de scénarios. Remplace les lignes `TODO` des entrées et des oracles par des données valides selon les règles du jeu avant d’utiliser `diff`. Les fichiers `resultatN.out` sont remplis par la redirection de sortie pendant les essais.
+J’ai aussi créé trois emplacements de tests dans `tests/`. Pour l’instant, les entrées et les oracles contiennent des notes `TODO` : je dois d’abord définir les règles et le format des actions, puis les remplacer par de vrais scénarios et leurs classements attendus. Les fichiers `resultatN.out` serviront à garder la sortie de chaque essai.
 
-Ouvre le fichier `.pro` dans Qt Creator, sélectionne le kit, puis compile. Après avoir défini les formats d’entrée et les règles du jeu, complète les entrées et les classements attendus avant les tests.
+Pour commencer à travailler, j’ouvre le fichier `.pro` dans Qt Creator, je choisis un kit et je compile. Le code du jeu et les tests restent à compléter.

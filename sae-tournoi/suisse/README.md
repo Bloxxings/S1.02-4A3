@@ -1,9 +1,9 @@
-# Système suisse
+# Mon système suisse
 
-Ce dossier contient les trois versions du jeu utilisées avec le système de tournoi suisse :
+Dans ce dossier, j’ai regroupé les trois jeux que je dois préparer pour le système suisse. J’ai fait un dossier séparé pour chacun afin de retrouver facilement son code et ses tests.
 
-- `pierre feuille ciseaux/` : projet C++ et ses tests.
-- `lanceur des dè/` : dossier du jeu de dés, à compléter.
-- `pile ou face/` : dossier du jeu pile ou face, à compléter.
+- `pierre feuille ciseaux/` : le jeu que j’ai déjà commencé à programmer.
+- `lanceur des dè/` : le jeu de dés, dont je dois encore compléter le code et les scénarios.
+- `pile ou face/` : ce jeu est aussi à compléter.
 
-Chaque jeu aura son propre projet Qt Creator et son propre dossier `tests` avec les fichiers d’entrée, les oracles et les résultats.
+Dans chaque dossier, j’ai mis un projet Qt Creator et un dossier `tests` pour ranger les entrées, les classements attendus et les résultats obtenus.
