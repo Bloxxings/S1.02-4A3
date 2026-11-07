@@ -1,0 +1,19 @@
+# Joueurs du deuxième test
+Joueur:Alice
+Joueur:Bilal
+Joueur:Chloe
+Joueur:David
+
+# Actions des matchs dans l'ordre où le programme les joue
+Action:1
+Action:2
+Action:0
+Action:1
+Action:2
+Action:0
+Action:2
+Action:1
+Action:0
+Action:2
+Action:1
+Action:0
