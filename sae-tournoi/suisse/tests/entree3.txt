@@ -1,0 +1,23 @@
+# Quatre joueurs
+Joueur:Alice
+Joueur:Bilal
+Joueur:Chloe
+Joueur:David
+
+# Ronde 1 : Alice-Bilal, puis Chloe-David
+Action de Alice: pierre
+Action de Bilal: ciseaux
+Action de Chloe: pierre
+Action de David: feuille
+
+# Ronde 2 : Alice-David, puis Chloe-Bilal
+Action de Alice: pierre
+Action de David: feuille
+Action de Chloe: feuille
+Action de Bilal: ciseaux
+
+# Ronde 3 : David-Bilal, puis Alice-Chloe
+Action de David: pierre
+Action de Bilal: feuille
+Action de Alice: feuille
+Action de Chloe: pierre
