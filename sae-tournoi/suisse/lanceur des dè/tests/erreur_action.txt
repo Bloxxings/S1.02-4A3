@@ -1,0 +1,4 @@
+# Test d'erreur : un dé ne peut pas donner 7
+Joueur:Alice
+Joueur:Bilal
+Action de Alice: 7

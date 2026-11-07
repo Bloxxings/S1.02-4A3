@@ -1,0 +1,4 @@
+# Test d'erreur : un tournoi doit avoir un nombre pair de joueurs
+Joueur:Alice
+Joueur:Bilal
+Joueur:Chloe
