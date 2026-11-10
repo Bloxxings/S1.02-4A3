@@ -1,6 +1,6 @@
 # Mon jeu de pile ou face
 
-J’ai programmé le jeu dans `main.cpp`. Le projet à ouvrir dans Qt Creator est `pile_ou_face.pro`.
+Le code du jeu se trouve dans `main.cpp`. Le projet à ouvrir dans Qt Creator est `pile_ou_face.pro`.
 
 Pour chaque match, les deux joueurs annoncent `Pile` ou `Face`, puis le fichier d’entrée donne le résultat du lancer avec une ligne `Resultat: Pile` ou `Resultat: Face`. Ces résultats sont fixés dans le fichier : le programme ne lance pas de pièce au hasard. Si un seul joueur a deviné le résultat, il gagne. Si les deux ont la même justesse (tous les deux ont deviné juste ou tous les deux ont deviné faux), le match est nul. Une victoire rapporte 3 points; une égalité rapporte 1 point à chaque joueur.
 
@@ -17,5 +17,3 @@ diff tests/resultat1.out tests/oracle1.txt
 ```
 
 Je répète les deux dernières commandes avec `2`, puis `3`. Si `diff` n’affiche rien, le classement obtenu correspond à l’oracle. Le classement est enregistré dans `resultatN.out`; les points et les victoires s’affichent dans le Terminal. Pour voir le message d’erreur d’un scénario invalide, je lance par exemple `./pile_ou_face < tests/erreur_action.txt`.
-
-Pour préparer cette première version, je me suis aidé de ChatGPT pour le code et les scénarios. Les tests ont été compilés et comparés aux oracles; je dois comprendre la logique et citer cette aide dans le rendu, comme le demande la consigne.
