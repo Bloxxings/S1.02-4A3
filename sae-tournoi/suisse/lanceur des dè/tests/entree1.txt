@@ -1,1 +1,23 @@
-# TODO : ajouter les joueurs et les actions du scénario.
+# Test 1 : victoires, égalité et appariements selon les scores
+Joueur:Alice
+Joueur:Bilal
+Joueur:Chloe
+Joueur:David
+
+# Ronde 1 : Alice-Bilal, puis Chloe-David
+Action de Alice: 6
+Action de Bilal: 2
+Action de Chloe: 3
+Action de David: 5
+
+# Ronde 2 : Alice-David, puis Bilal-Chloe
+Action de Alice: 4
+Action de David: 3
+Action de Bilal: 4
+Action de Chloe: 4
+
+# Ronde 3 : Alice-Chloe, puis David-Bilal
+Action de Alice: 6
+Action de Chloe: 1
+Action de David: 3
+Action de Bilal: 5

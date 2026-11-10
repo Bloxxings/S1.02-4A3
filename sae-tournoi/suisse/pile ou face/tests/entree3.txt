@@ -1,1 +1,18 @@
-# TODO : ajouter les joueurs et les actions du scénario.
+# Test 3 : deux joueurs et une égalité
+Joueur:Alice
+Joueur:Bilal
+
+# Ronde 1 : Alice-Bilal
+Action de Alice: Pile
+Action de Bilal: Face
+Resultat: Face
+
+# Ronde 2 : Bilal-Alice (Bilal est en tête après la première ronde)
+Action de Bilal: Pile
+Action de Alice: Face
+Resultat: Face
+
+# Ronde 3 : Alice-Bilal
+Action de Alice: Pile
+Action de Bilal: Pile
+Resultat: Pile

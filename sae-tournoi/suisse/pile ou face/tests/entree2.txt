@@ -1,1 +1,26 @@
-# TODO : ajouter les joueurs et les actions du scénario.
+# Test 2 : les deux joueurs d'un match font la même prédiction
+Joueur:Alice
+Joueur:Bilal
+Joueur:Chloe
+Joueur:David
+
+Action de Alice: Pile
+Action de Bilal: Pile
+Resultat: Pile
+Action de Chloe: Face
+Action de David: Face
+Resultat: Face
+
+Action de Alice: Pile
+Action de Chloe: Pile
+Resultat: Face
+Action de Bilal: Pile
+Action de David: Pile
+Resultat: Pile
+
+Action de Alice: Face
+Action de David: Face
+Resultat: Face
+Action de Bilal: Pile
+Action de Chloe: Pile
+Resultat: Pile

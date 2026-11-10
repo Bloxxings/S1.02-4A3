@@ -1,9 +1,7 @@
 # Mon système suisse
 
-Dans ce dossier, j’ai regroupé les trois jeux que je dois préparer pour le système suisse. J’ai fait un dossier séparé pour chacun afin de retrouver facilement son code et ses tests.
+Dans ce dossier, j’ai organisé trois mini-jeux pour le système de tournoi suisse : pierre-feuille-ciseaux, dés et pile ou face. Chaque jeu a son propre projet Qt Creator et son dossier `tests`.
 
-- `pierre feuille ciseaux/` : le jeu que j’ai déjà commencé à programmer.
-- `lanceur des dè/` : le jeu de dés, dont je dois encore compléter le code et les scénarios.
-- `pile ou face/` : ce jeu est aussi à compléter.
+Pour que les essais donnent toujours le même résultat, je lis les actions depuis les fichiers d’entrée. Pour le jeu de dés, les valeurs du dé sont écrites dans le fichier. Pour pile ou face, les choix des joueurs et le résultat du lancer sont écrits dans le fichier. Les programmes n’utilisent donc pas de tirage aléatoire pendant les tests.
 
-Dans chaque dossier, j’ai mis un projet Qt Creator et un dossier `tests` pour ranger les entrées, les classements attendus et les résultats obtenus.
+Pour cette partie, je me suis aidé de ChatGPT pour préparer une première version du code et des tests. Je dois pouvoir expliquer le fonctionnement et citer cette aide dans le rendu, comme le demande la consigne.

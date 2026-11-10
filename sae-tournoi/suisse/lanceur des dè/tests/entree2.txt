@@ -1,1 +1,20 @@
-# TODO : ajouter les joueurs et les actions du scénario.
+# Test 2 : matchs nuls sur les trois rondes
+Joueur:Alice
+Joueur:Bilal
+Joueur:Chloe
+Joueur:David
+
+Action de Alice: 1
+Action de Bilal: 1
+Action de Chloe: 6
+Action de David: 6
+
+Action de Alice: 2
+Action de Chloe: 2
+Action de Bilal: 3
+Action de David: 3
+
+Action de Alice: 4
+Action de David: 4
+Action de Bilal: 5
+Action de Chloe: 5

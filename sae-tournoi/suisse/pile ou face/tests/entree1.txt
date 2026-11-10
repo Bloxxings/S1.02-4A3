@@ -1,1 +1,29 @@
-# TODO : ajouter les joueurs et les actions du scénario.
+# Test 1 : une prédiction juste gagne, deux prédictions identiques font égalité
+Joueur:Alice
+Joueur:Bilal
+Joueur:Chloe
+Joueur:David
+
+# Ronde 1 : Alice-Bilal, puis Chloe-David
+Action de Alice: Pile
+Action de Bilal: Face
+Resultat: Pile
+Action de Chloe: Face
+Action de David: Pile
+Resultat: Face
+
+# Ronde 2 : Alice-Chloe, puis Bilal-David
+Action de Alice: Face
+Action de Chloe: Pile
+Resultat: Face
+Action de Bilal: Pile
+Action de David: Face
+Resultat: Face
+
+# Ronde 3 : Alice-David, puis Chloe-Bilal
+Action de Alice: Pile
+Action de David: Face
+Resultat: Pile
+Action de Chloe: Face
+Action de Bilal: Pile
+Resultat: Pile

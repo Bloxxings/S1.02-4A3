@@ -1,1 +1,10 @@
-# TODO : ajouter les joueurs et les actions du scénario.
+# Test 3 : deux joueurs, résultats 1 et 6 et un match nul
+Joueur:Alice
+Joueur:Bilal
+
+Action de Alice: 1
+Action de Bilal: 6
+Action de Bilal: 1
+Action de Alice: 6
+Action de Alice: 2
+Action de Bilal: 2

@@ -1,1 +1,4 @@
-# TODO : remplacer par le classement attendu, calculé à la main.
+1:Alice
+2:Bilal
+3:Chloe
+4:David
