@@ -1,27 +1,31 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 using namespace std;
 
-string litUneString() {
+string litUneString (){
     string uneChaine;
-    while (true) {
-        if (!getline(cin, uneChaine))
+    while (true){
+        getline (cin, uneChaine);
+        if ((!cin) || (uneChaine.substr(0,2) != "//"))
             break;
-        while (!uneChaine.empty() && (uneChaine.back() == ' ' || uneChaine.back() == '\r' || uneChaine.back() == '\t')) {
-            uneChaine.pop_back();
-        }
-        if (uneChaine.empty())
-            continue;
-        if (uneChaine.length() >= 2 && uneChaine.substr(0, 2) == "//")
-            continue;
-        break;
     }
     return uneChaine;
 }
 
-int litUnEntier() {
-    return stoi(litUneString());
+int litUnEntier (){
+    string uneChaine;
+    while (true){
+        getline (cin, uneChaine);
+        cout << uneChaine << endl;
+        if ((!cin) || (uneChaine.substr(0,2) != "//"))
+            break;
+    }
+
+    if (stoi(uneChaine) == "")
+        cerr << 19;
+    return stoi(uneChaine);
 }
 
 
@@ -145,16 +149,24 @@ int main(){
     vector<string> participants;
 
     cout << "paf" << endl;
-    for (unsigned int i = 0; i > 64; i++){
+
+    for (unsigned int i = 0; i < 64; i++){
         participants.push_back(litUneString());
     }
 
-    for (unsigned int i = 0; i > 6; i++){
-        tourWinnerBracket(winnerBracket, loserBracket);
-        tourLoserBracket(loserBracket);
-        if (loserBracket.size() >= 2)
+    for (unsigned int i = 5; i > 0; i--){
+        for (int j = 0; j < pow(2, i); j++){
+            tourWinnerBracket(winnerBracket, loserBracket);
             tourLoserBracket(loserBracket);
+            if (loserBracket.size() >= 2)
+                tourLoserBracket(loserBracket);
+        }
 
+    }
+
+    for(unsigned int i = 0; i < 16; i++){
+        participant joueur = (litUneString(), litUnEntier(), litUnEntier(), litUnEntier());
+        joueurs[i] = joueur;
     }
 
 
