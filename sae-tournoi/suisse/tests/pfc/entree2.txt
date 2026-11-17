@@ -1,0 +1,18 @@
+# Matchs nuls sur les trois rondes
+Jeu:PFC
+Joueur:Adam O
+Joueur:Adam K
+Joueur:Tony
+Joueur:Ilyess
+Action de Adam O: pierre
+Action de Adam K: pierre
+Action de Tony: feuille
+Action de Ilyess: feuille
+Action de Adam O: ciseaux
+Action de Tony: ciseaux
+Action de Adam K: pierre
+Action de Ilyess: pierre
+Action de Adam O: feuille
+Action de Ilyess: feuille
+Action de Adam K: ciseaux
+Action de Tony: ciseaux

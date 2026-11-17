@@ -1,0 +1,10 @@
+# Deux joueurs : une victoire chacun puis égalité
+Jeu:Des
+Joueur:Adam O
+Joueur:Adam K
+Action de Adam O: 1
+Action de Adam K: 6
+Action de Adam K: 2
+Action de Adam O: 6
+Action de Adam O: 3
+Action de Adam K: 3

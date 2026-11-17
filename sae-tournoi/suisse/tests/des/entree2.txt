@@ -1,0 +1,18 @@
+# Tous les matchs sont nuls
+Jeu:Des
+Joueur:Adam O
+Joueur:Adam K
+Joueur:Tony
+Joueur:Ilyess
+Action de Adam O: 4
+Action de Adam K: 4
+Action de Tony: 2
+Action de Ilyess: 2
+Action de Adam O: 3
+Action de Tony: 3
+Action de Adam K: 6
+Action de Ilyess: 6
+Action de Adam O: 1
+Action de Ilyess: 1
+Action de Adam K: 5
+Action de Tony: 5
