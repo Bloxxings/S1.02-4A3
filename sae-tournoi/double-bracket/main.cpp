@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+<<<<<<< Updated upstream
 #include <cmath>
 using namespace std;
 
@@ -140,12 +141,84 @@ void tourLoserBracket(vector<string> & loserBracket) {
         perdantsAuTour.push_back(gagnant);
     }
     loserBracket = perdantsAuTour;
+=======
+using namespace std;
+
+vector<int> pfc(vector<int> score){
+    int choix1;
+    int choix2;
+    cin >> choix1;
+    cin >> choix2;
+
+    if (choix2 == choix1 + 1)
+        return {score[0], score[1] + 1};
+    else if (choix1 == choix2)
+        return score;
+    else
+        return {score[1] + 1, score[0]};
+}
+
+vector<int> des(vector<int> score){
+    int choix1;
+    int choix2;
+    cin >> choix1;
+    cin >> choix2;
+
+    if (choix2 > choix1)
+        return {score[0], score[1] + 1};
+    else if (choix1 == choix2)
+        return score;
+    else
+        return {score[0] + 1, score[1]};
+
+}
+
+vector<int> pf_facegagnant(vector<int> score){
+    string choix1;
+    string choix2;
+    cin >> choix1;
+    cin >> choix2;
+
+    if (choix1 == choix2)
+        return score;
+    else if (choix1 == "face")
+        return {score[0] + 1, score[1]};
+    else if (choix2 == "pile")
+        return {score[0], score[1] + 1};
+}
+
+
+vector<int> bO3(string j1, string j2){
+    vector<int> score =  {0, 0};
+    score = pfc(score);
+    score = des(score);
+    if (score[0] == score[1])
+        score = pf_facegagnant(score);
+    return score;
+}
+
+void bracket(winnerBracket, loserBracket, nombreDeParties){
+    for (unsigned int i = 0; i < nombreDeParties; i+= 2){
+        vector<int> manche = bO3(winnerBracket[i], winnerBracket[i+1]);
+        if (manche[0] > manche[1]){
+            loserBracket.push_back(manche[1]);
+
+            vector<int> temporaire;
+            for (size_t i = 0; i < winnerBracket.size(); i++){
+                if (winnerBracket[i] == manche[1])
+                    continue;
+                temporaire.push_back(winnerBracket[i]);
+            }
+            winnerBracket = temporaire;
+        }
+>>>>>>> Stashed changes
 }
 
 
 int main(){
     vector<string> winnerBracket;
     vector<string> loserBracket;
+<<<<<<< Updated upstream
     vector<string> participants;
 
     cout << "paf" << endl;
@@ -176,4 +249,16 @@ int main(){
     cout << grandVainqueur << " est le vainqueur" << endl;
     return 0;
 
+=======
+    for (unsigned int i = 0; i < 64; i++){
+        string joueur;
+        cin >> joueur;
+        winnerBracket.push_back(joueur);
+    }
+
+
+
+
+    return 0;
+>>>>>>> Stashed changes
 }
