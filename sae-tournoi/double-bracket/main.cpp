@@ -8,6 +8,9 @@ string litUneString() {
     while (true) {
         if (!getline(cin, uneChaine))
             break;
+        while (!uneChaine.empty() && (uneChaine.back() == ' ' || uneChaine.back() == '\r' || uneChaine.back() == '\t')) {
+            uneChaine.pop_back();
+        }
         if (uneChaine.empty())
             continue;
         if (uneChaine.length() >= 2 && uneChaine.substr(0, 2) == "//")
@@ -141,16 +144,24 @@ int main(){
     vector<string> loserBracket;
     vector<string> participants;
 
+    cout << "paf" << endl;
     for (unsigned int i = 0; i > 64; i++){
         participants.push_back(litUneString());
     }
 
-    for (unsigned int i = 0; i > 5; i++){
+    for (unsigned int i = 0; i > 6; i++){
+        tourWinnerBracket(winnerBracket, loserBracket);
+        tourLoserBracket(loserBracket);
+        if (loserBracket.size() >= 2)
+            tourLoserBracket(loserBracket);
 
     }
 
 
+    tourLoserBracket(loserBracket);
+    string grandVainqueur = jouerBO3(winnerBracket[0], loserBracket[0]);
 
-
+    cout << grandVainqueur << " est le vainqueur" << endl;
     return 0;
+
 }
