@@ -7,129 +7,160 @@
 #include <sstream>
 #include <string>
 #include <vector>
+
 using namespace std;
 
 struct Joueur { string nom; int points = 0; int victoires = 0; };
 struct Action { string nom; int choix; };
 enum Jeu { PFC, DES, PILE_FACE };
 
-string nettoyer(const string& s) {
-    size_t a = s.find_first_not_of(" \t\r\n");
-    if (a == string::npos) return "";
-    return s.substr(a, s.find_last_not_of(" \t\r\n") - a + 1);
-}
-string minuscule(string s) {
-    transform(s.begin(), s.end(), s.begin(), [](unsigned char c) { return char(tolower(c)); });
-    return s;
-}
-bool choixValide(Jeu jeu, const string& s, int& choix) {
-    string v = minuscule(nettoyer(s));
-    if (jeu == PFC) {
-        if (v == "pierre") choix = 0;
-        else if (v == "feuille") choix = 1;
-        else if (v == "ciseaux") choix = 2;
-        else return false;
-        return true;
-    }
-    if (jeu == PILE_FACE) {
-        if (v == "pile") choix = 0;
-        else if (v == "face") choix = 1;
-        else return false;
-        return true;
-    }
-    istringstream flux(v); string reste;
-    return (flux >> choix) && !(flux >> reste) && choix >= 1 && choix <= 6;
-}
-bool lireJeu(const string& s, Jeu& jeu) {
-    string v = minuscule(nettoyer(s));
-    if (v == "pfc" || v == "pierre-feuille-ciseaux") jeu = PFC;
-    else if (v == "des" || v == "dés") jeu = DES;
-    else if (v == "pileface" || v == "pile-face") jeu = PILE_FACE;
-    else return false;
-    return true;
-}
-int vainqueurPFC(int a, int b) {
-    if (a == b) return 0;
-    if ((a == 0 && b == 2) || (a == 1 && b == 0) || (a == 2 && b == 1)) return 1;
-    return -1;
-}
-
-int main() {
+struct Tournoi {
     Jeu jeu = PFC;
     bool jeuLu = false;
     vector<Joueur> joueurs;
     vector<Action> actions;
     vector<int> resultats;
-    string ligne;
-    while (getline(cin, ligne)) {
-        ligne = nettoyer(ligne);
-        if (ligne.empty() || ligne[0] == '#') continue;
-        if (ligne.rfind("Jeu:", 0) == 0) {
-            if (jeuLu || !lireJeu(ligne.substr(4), jeu)) {
-                cerr << "Erreur : indique un seul jeu valide après Jeu:.\n"; return 1;
-            }
-            jeuLu = true;
-        } else if (ligne.rfind("Joueur:", 0) == 0) {
-            string nom = nettoyer(ligne.substr(7));
-            if (nom.empty()) { cerr << "Erreur : nom de joueur vide.\n"; return 1; }
-            joueurs.push_back({nom, 0, 0});
-        } else if (ligne.rfind("Action de ", 0) == 0) {
-            size_t p = ligne.find(':', 10); int choix;
-            if (!jeuLu || p == string::npos || !choixValide(jeu, ligne.substr(p + 1), choix)) {
-                cerr << "Erreur : action invalide.\n"; return 1;
-            }
-            actions.push_back({nettoyer(ligne.substr(10, p - 10)), choix});
-        } else if (ligne.rfind("Resultat:", 0) == 0 && jeuLu && jeu == PILE_FACE) {
-            int resultat;
-            if (!choixValide(PILE_FACE, ligne.substr(9), resultat)) {
-                cerr << "Erreur : Resultat doit être Pile ou Face.\n"; return 1;
-            }
-            resultats.push_back(resultat);
-        } else { cerr << "Erreur : ligne inconnue : " << ligne << '\n'; return 1; }
+};
+
+string nettoyer(const string& s) {
+    size_t debut = s.find_first_not_of(" \t\r\n");
+    if (debut == string::npos) return "";
+    return s.substr(debut, s.find_last_not_of(" \t\r\n") - debut + 1);
+}
+
+string minuscules(string s) {
+    transform(s.begin(), s.end(), s.begin(),
+              [](unsigned char c) { return static_cast<char>(tolower(c)); });
+    return s;
+}
+
+bool lireJeu(const string& texte, Jeu& jeu) {
+    string valeur = minuscules(nettoyer(texte));
+    if (valeur == "pfc" || valeur == "pierre-feuille-ciseaux") jeu = PFC;
+    else if (valeur == "des" || valeur == "dés") jeu = DES;
+    else if (valeur == "pileface" || valeur == "pile-face") jeu = PILE_FACE;
+    else return false;
+    return true;
+}
+
+bool lireChoix(Jeu jeu, const string& texte, int& choix) {
+    string valeur = minuscules(nettoyer(texte));
+    if (jeu == PFC) {
+        if (valeur == "pierre") choix = 0;
+        else if (valeur == "feuille") choix = 1;
+        else if (valeur == "ciseaux") choix = 2;
+        else return false;
+        return true;
     }
-    if (!jeuLu) { cerr << "Erreur : le fichier doit préciser Jeu:PFC, Jeu:Des ou Jeu:PileFace.\n"; return 1; }
+    if (jeu == PILE_FACE) {
+        if (valeur == "pile") choix = 0;
+        else if (valeur == "face") choix = 1;
+        else return false;
+        return true;
+    }
+    istringstream flux(valeur);
+    string reste;
+    return (flux >> choix) && !(flux >> reste) && choix >= 1 && choix <= 6;
+}
+
+int resultatPFC(int a, int b) {
+    if (a == b) return 0;
+    if ((a == 0 && b == 2) || (a == 1 && b == 0) || (a == 2 && b == 1)) return 1;
+    return -1;
+}
+
+bool traiterLigne(Tournoi& t, const string& ligne) {
+    if (ligne.rfind("Joueur:", 0) == 0) {
+        string nom = nettoyer(ligne.substr(7));
+        if (nom.empty()) { cerr << "Erreur : nom de joueur vide.\n"; return false; }
+        t.joueurs.push_back({nom, 0, 0});
+    } else if (ligne.rfind("Action de ", 0) == 0) {
+        size_t deuxPoints = ligne.find(':', 10);
+        int choix;
+        if (deuxPoints == string::npos || !lireChoix(t.jeu, ligne.substr(deuxPoints + 1), choix)) {
+            cerr << "Erreur : action invalide pour le jeu choisi.\n";
+            return false;
+        }
+        t.actions.push_back({nettoyer(ligne.substr(10, deuxPoints - 10)), choix});
+    } else if (ligne.rfind("Resultat:", 0) == 0 && t.jeu == PILE_FACE) {
+        int resultat;
+        if (!lireChoix(PILE_FACE, ligne.substr(9), resultat)) {
+            cerr << "Erreur : Resultat doit être Pile ou Face.\n";
+            return false;
+        }
+        t.resultats.push_back(resultat);
+    } else {
+        cerr << "Erreur : ligne inconnue : " << ligne << '\n';
+        return false;
+    }
+    return true;
+}
+
+bool calculerTournoi(Tournoi& t) {
+    vector<Joueur>& joueurs = t.joueurs;
     if (joueurs.size() < 2 || joueurs.size() % 2 != 0) {
-        cerr << "Erreur : il faut un nombre pair de joueurs, au moins deux.\n"; return 1;
+        cerr << "Erreur : il faut un nombre pair de joueurs, au moins deux.\n";
+        return false;
     }
     set<string> noms;
-    for (const Joueur& j : joueurs)
-        if (!noms.insert(j.nom).second) { cerr << "Erreur : nom de joueur en double.\n"; return 1; }
+    for (const Joueur& joueur : joueurs) {
+        if (!noms.insert(joueur.nom).second) {
+            cerr << "Erreur : deux joueurs ont le même nom dans un tournoi.\n";
+            return false;
+        }
+    }
 
     vector<vector<bool>> dejaJoue(joueurs.size(), vector<bool>(joueurs.size(), false));
     size_t prochaineAction = 0, prochainResultat = 0;
     for (int ronde = 1; ronde <= 3; ronde++) {
         vector<int> ordre;
-        for (int i = 0; i < int(joueurs.size()); i++) ordre.push_back(i);
-        stable_sort(ordre.begin(), ordre.end(), [&](int a, int b) { return joueurs[a].points > joueurs[b].points; });
-        vector<bool> apparie(joueurs.size(), false);
+        for (int i = 0; i < static_cast<int>(joueurs.size()); i++) ordre.push_back(i);
+        stable_sort(ordre.begin(), ordre.end(), [&](int a, int b) {
+            return joueurs[a].points > joueurs[b].points;
+        });
+        vector<bool> dejaApparie(joueurs.size(), false);
+
         for (int a : ordre) {
-            if (apparie[a]) continue;
-            int b = -1, ecartMin = numeric_limits<int>::max();
-            for (int c : ordre) {
-                if (c == a || apparie[c] || dejaJoue[a][c]) continue;
-                int ecart = abs(joueurs[a].points - joueurs[c].points);
-                if (ecart < ecartMin) { ecartMin = ecart; b = c; }
+            if (dejaApparie[a]) continue;
+            int b = -1, meilleurEcart = numeric_limits<int>::max();
+            for (int candidat : ordre) {
+                if (candidat == a || dejaApparie[candidat] || dejaJoue[a][candidat]) continue;
+                int ecart = abs(joueurs[a].points - joueurs[candidat].points);
+                if (ecart < meilleurEcart) { meilleurEcart = ecart; b = candidat; }
             }
-            if (b == -1) for (int c : ordre) if (c != a && !apparie[c]) { b = c; break; }
-            if (b == -1) { cerr << "Erreur : aucun adversaire disponible.\n"; return 1; }
-            apparie[a] = apparie[b] = true;
-            if (prochaineAction + 1 >= actions.size()) { cerr << "Erreur : actions manquantes.\n"; return 1; }
-            const Action& x = actions[prochaineAction++];
-            const Action& y = actions[prochaineAction++];
+            if (b == -1) {
+                for (int candidat : ordre)
+                    if (candidat != a && !dejaApparie[candidat]) { b = candidat; break; }
+            }
+            if (b == -1) { cerr << "Erreur : aucun adversaire disponible.\n"; return false; }
+            dejaApparie[a] = dejaApparie[b] = true;
+            if (prochaineAction + 1 >= t.actions.size()) {
+                cerr << "Erreur : actions manquantes.\n";
+                return false;
+            }
+            const Action& x = t.actions[prochaineAction++];
+            const Action& y = t.actions[prochaineAction++];
             if (x.nom != joueurs[a].nom || y.nom != joueurs[b].nom) {
-                cerr << "Erreur : actions attendues pour " << joueurs[a].nom << " et " << joueurs[b].nom << ".\n"; return 1;
+                cerr << "Erreur : actions attendues pour " << joueurs[a].nom
+                     << " et " << joueurs[b].nom << ".\n";
+                return false;
             }
+
             int resultatPiece = -1;
-            if (jeu == PILE_FACE) {
-                if (prochainResultat >= resultats.size()) { cerr << "Erreur : résultat de lancer manquant.\n"; return 1; }
-                resultatPiece = resultats[prochainResultat++];
+            if (t.jeu == PILE_FACE) {
+                if (prochainResultat >= t.resultats.size()) {
+                    cerr << "Erreur : résultat de lancer manquant.\n";
+                    return false;
+                }
+                resultatPiece = t.resultats[prochainResultat++];
             }
             int gagnant;
-            if (jeu == PFC) gagnant = vainqueurPFC(x.choix, y.choix);
-            else if (jeu == DES) gagnant = x.choix > y.choix ? 1 : (x.choix < y.choix ? -1 : 0);
+            if (t.jeu == PFC) gagnant = resultatPFC(x.choix, y.choix);
+            else if (t.jeu == DES) gagnant = x.choix > y.choix ? 1 : (x.choix < y.choix ? -1 : 0);
             else {
-                bool bx = x.choix == resultatPiece, by = y.choix == resultatPiece;
-                gagnant = bx == by ? 0 : (bx ? 1 : -1);
+                bool xJuste = x.choix == resultatPiece;
+                bool yJuste = y.choix == resultatPiece;
+                gagnant = xJuste == yJuste ? 0 : (xJuste ? 1 : -1);
             }
             if (gagnant == 1) { joueurs[a].points += 3; joueurs[a].victoires++; }
             else if (gagnant == -1) { joueurs[b].points += 3; joueurs[b].victoires++; }
@@ -137,16 +168,51 @@ int main() {
             dejaJoue[a][b] = dejaJoue[b][a] = true;
         }
     }
-    if (prochaineAction != actions.size() || prochainResultat != resultats.size()) {
-        cerr << "Erreur : trop d'actions ou de résultats.\n"; return 1;
+
+    if (prochaineAction != t.actions.size() || prochainResultat != t.resultats.size()) {
+        cerr << "Erreur : trop d'actions ou de résultats.\n";
+        return false;
     }
     vector<int> classement;
-    for (int i = 0; i < int(joueurs.size()); i++) classement.push_back(i);
+    for (int i = 0; i < static_cast<int>(joueurs.size()); i++) classement.push_back(i);
     stable_sort(classement.begin(), classement.end(), [&](int a, int b) {
         if (joueurs[a].points != joueurs[b].points) return joueurs[a].points > joueurs[b].points;
         return joueurs[a].victoires > joueurs[b].victoires;
     });
-    for (size_t i = 0; i < classement.size(); i++) cout << i + 1 << ':' << joueurs[classement[i]].nom << '\n';
-    for (const Joueur& j : joueurs) cerr << j.nom << " : " << j.points << " points, " << j.victoires << " victoires\n";
-    return 0;
+    for (size_t i = 0; i < classement.size(); i++)
+        cout << i + 1 << ':' << joueurs[classement[i]].nom << '\n';
+    return true;
+}
+
+int main() {
+    Tournoi tournoi;
+    bool auMoinsUnTournoi = false;
+    string ligne;
+    while (getline(cin, ligne)) {
+        ligne = nettoyer(ligne);
+        if (ligne.empty() || ligne[0] == '#') continue;
+        if (ligne.rfind("Jeu:", 0) == 0) {
+            if (tournoi.jeuLu) {
+                if (!calculerTournoi(tournoi)) return 1;
+                tournoi = Tournoi();
+            }
+            if (!lireJeu(ligne.substr(4), tournoi.jeu)) {
+                cerr << "Erreur : jeu invalide après Jeu:.\n";
+                return 1;
+            }
+            tournoi.jeuLu = true;
+            auMoinsUnTournoi = true;
+        } else {
+            if (!tournoi.jeuLu) {
+                cerr << "Erreur : chaque bloc doit commencer par Jeu:.\n";
+                return 1;
+            }
+            if (!traiterLigne(tournoi, ligne)) return 1;
+        }
+    }
+    if (!auMoinsUnTournoi) {
+        cerr << "Erreur : le fichier doit contenir au moins un bloc Jeu:.\n";
+        return 1;
+    }
+    return calculerTournoi(tournoi) ? 0 : 1;
 }

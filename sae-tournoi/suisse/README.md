@@ -1,24 +1,25 @@
-# Système suisse
+# Système suisse — trois jeux
 
-Ce dossier contient un seul projet Qt Creator : `suisse.pro`. Le programme lit le tournoi depuis l'entrée standard et écrit le classement final sur la sortie standard. Il ne lance pas de partie interactive et ne fait aucun tirage aléatoire.
+Ce projet contient un seul programme en C++17. Il lit un ou plusieurs blocs de tournoi depuis un fichier d'entrée, calcule les appariements et le classement, puis écrit les classements dans l'ordre des blocs. Il n'y a pas de saisie interactive pendant l'exécution.
 
-Chaque entrée commence par `Jeu:PFC`, `Jeu:Des` ou `Jeu:PileFace`. Les choix et les résultats nécessaires sont déjà écrits dans le fichier. Les scénarios utilisent les noms Adam O, Adam K, Tony et Ilyess.
+Chaque bloc commence par une ligne `Jeu:` suivie de `PFC`, `Des` ou `PileFace`. Les joueurs et leurs actions sont déjà indiqués dans le fichier. Pour Pile ou Face, le résultat de chaque lancer est aussi fourni avec `Resultat:`. Les noms utilisés sont Adam O, Adam K, Tony et Ilyess.
 
-Le tournoi comporte trois rondes. Les joueurs ayant un score proche sont appariés en priorité, et les revanches sont évitées si possible. Une victoire vaut 3 points, une égalité 1 point à chaque joueur. Le classement est trié par points, puis par victoires.
+Le tournoi comporte trois rondes. Les joueurs ayant un score proche sont appariés en priorité et les revanches sont évitées si possible. Une victoire vaut 3 points et une égalité vaut 1 point à chaque joueur. Le classement est trié par points, puis par victoires.
 
-## Compiler et lancer les tests
+## Organisation des tests
 
-Dans Qt Creator, ouvrir `suisse.pro` et compiler. Les entrées et les oracles sont rangés dans `tests/`, par mini-jeu. Un scénario peut être lancé ainsi depuis ce dossier :
+Le dossier `tests/` contient deux tests complets. Chaque entrée regroupe un scénario de chacun des trois jeux, dans l'ordre PFC, dés, puis pile ou face. L'oracle correspondant regroupe les trois classements attendus dans le même ordre. Les fichiers `resultat1.out` et `resultat2.out` reçoivent la sortie du programme.
 
-```sh
-./build/suisse < tests/pfc/entree1.txt > tests/pfc/resultat1.out
-diff tests/pfc/resultat1.out tests/pfc/oracle1.txt
-```
+- `entree1.txt` : scénarios avec des victoires et des égalités.
+- `entree2.txt` : scénarios principalement composés de matchs nuls ou de choix identiques.
+- `oracle1.txt` et `oracle2.txt` : classements attendus pour les trois blocs de chaque entrée.
 
-Le script `tests/run_tests.sh` compile dans `build/`, lance les neuf scénarios et compare les résultats aux oracles :
+## Compiler et vérifier
+
+Dans Qt Creator, ouvrir `suisse.pro` et compiler le projet. Pour lancer les deux tests et comparer automatiquement les sorties aux oracles, ouvrir le terminal dans le dossier du projet et exécuter :
 
 ```sh
 ./tests/run_tests.sh
 ```
 
-Si `diff` ne signale aucune différence, le classement calculé correspond à l'oracle.
+Le script compile le programme, remplit les deux fichiers `resultat*.out`, puis lance `diff` avec chaque oracle. Un message `OK` indique que le résultat correspond.

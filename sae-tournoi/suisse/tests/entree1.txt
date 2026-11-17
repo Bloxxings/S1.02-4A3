@@ -1,0 +1,71 @@
+# Résultats variés : victoires et égalité
+Jeu:PFC
+Joueur:Adam O
+Joueur:Adam K
+Joueur:Tony
+Joueur:Ilyess
+# Ronde 1 : Adam O-Adam K, puis Tony-Ilyess
+Action de Adam O: pierre
+Action de Adam K: ciseaux
+Action de Tony: feuille
+Action de Ilyess: pierre
+# Ronde 2 : Adam O-Tony, puis Adam K-Ilyess
+Action de Adam O: ciseaux
+Action de Tony: ciseaux
+Action de Adam K: pierre
+Action de Ilyess: feuille
+# Ronde 3 : Adam O-Ilyess, puis Tony-Adam K
+Action de Adam O: pierre
+Action de Ilyess: feuille
+Action de Tony: feuille
+Action de Adam K: pierre
+
+# Victoires et égalité
+Jeu:Des
+Joueur:Adam O
+Joueur:Adam K
+Joueur:Tony
+Joueur:Ilyess
+# Ronde 1 : Adam O-Adam K, puis Tony-Ilyess
+Action de Adam O: 6
+Action de Adam K: 2
+Action de Tony: 3
+Action de Ilyess: 5
+# Ronde 2 : Adam O-Ilyess, puis Adam K-Tony
+Action de Adam O: 4
+Action de Ilyess: 4
+Action de Adam K: 4
+Action de Tony: 4
+# Ronde 3 : Adam O-Tony, puis Ilyess-Adam K
+Action de Adam O: 6
+Action de Tony: 1
+Action de Ilyess: 2
+Action de Adam K: 5
+
+# Victoires et égalité
+Jeu:PileFace
+Joueur:Adam O
+Joueur:Adam K
+Joueur:Tony
+Joueur:Ilyess
+# Ronde 1 : Adam O-Adam K, puis Tony-Ilyess
+Action de Adam O: Pile
+Action de Adam K: Face
+Resultat: Pile
+Action de Tony: Face
+Action de Ilyess: Pile
+Resultat: Face
+# Ronde 2 : Adam O-Tony, puis Adam K-Ilyess
+Action de Adam O: Pile
+Action de Tony: Pile
+Resultat: Face
+Action de Adam K: Pile
+Action de Ilyess: Face
+Resultat: Face
+# Ronde 3 : Adam O-Ilyess, puis Tony-Adam K
+Action de Adam O: Face
+Action de Ilyess: Pile
+Resultat: Pile
+Action de Tony: Face
+Action de Adam K: Pile
+Resultat: Face
