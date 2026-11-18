@@ -1,27 +1,32 @@
 #include <iostream>
 #include <string>
 #include <vector>
+<<<<<<< Updated upstream
+#include <cmath>
 using namespace std;
 
-string litUneString() {
+string litUneString (){
     string uneChaine;
-    while (true) {
-        if (!getline(cin, uneChaine))
+    while (true){
+        getline (cin, uneChaine);
+        if ((!cin) || (uneChaine.substr(0,2) != "//"))
             break;
-        while (!uneChaine.empty() && (uneChaine.back() == ' ' || uneChaine.back() == '\r' || uneChaine.back() == '\t')) {
-            uneChaine.pop_back();
-        }
-        if (uneChaine.empty())
-            continue;
-        if (uneChaine.length() >= 2 && uneChaine.substr(0, 2) == "//")
-            continue;
-        break;
     }
     return uneChaine;
 }
 
-int litUnEntier() {
-    return stoi(litUneString());
+int litUnEntier (){
+    string uneChaine;
+    while (true){
+        getline (cin, uneChaine);
+        cout << uneChaine << endl;
+        if ((!cin) || (uneChaine.substr(0,2) != "//"))
+            break;
+    }
+
+    if (stoi(uneChaine) == "")
+        cerr << 19;
+    return stoi(uneChaine);
 }
 
 
@@ -136,25 +141,105 @@ void tourLoserBracket(vector<string> & loserBracket) {
         perdantsAuTour.push_back(gagnant);
     }
     loserBracket = perdantsAuTour;
+=======
+using namespace std;
+
+vector<int> pfc(vector<int> score){
+    int choix1;
+    int choix2;
+    cin >> choix1;
+    cin >> choix2;
+
+    if (choix2 == choix1 + 1)
+        return {score[0], score[1] + 1};
+    else if (choix1 == choix2)
+        return score;
+    else
+        return {score[1] + 1, score[0]};
+}
+
+vector<int> des(vector<int> score){
+    int choix1;
+    int choix2;
+    cin >> choix1;
+    cin >> choix2;
+
+    if (choix2 > choix1)
+        return {score[0], score[1] + 1};
+    else if (choix1 == choix2)
+        return score;
+    else
+        return {score[0] + 1, score[1]};
+
+}
+
+vector<int> pf_facegagnant(vector<int> score){
+    string choix1;
+    string choix2;
+    cin >> choix1;
+    cin >> choix2;
+
+    if (choix1 == choix2)
+        return score;
+    else if (choix1 == "face")
+        return {score[0] + 1, score[1]};
+    else if (choix2 == "pile")
+        return {score[0], score[1] + 1};
+}
+
+
+vector<int> bO3(string j1, string j2){
+    vector<int> score =  {0, 0};
+    score = pfc(score);
+    score = des(score);
+    if (score[0] == score[1])
+        score = pf_facegagnant(score);
+    return score;
+}
+
+void bracket(winnerBracket, loserBracket, nombreDeParties){
+    for (unsigned int i = 0; i < nombreDeParties; i+= 2){
+        vector<int> manche = bO3(winnerBracket[i], winnerBracket[i+1]);
+        if (manche[0] > manche[1]){
+            loserBracket.push_back(manche[1]);
+
+            vector<int> temporaire;
+            for (size_t i = 0; i < winnerBracket.size(); i++){
+                if (winnerBracket[i] == manche[1])
+                    continue;
+                temporaire.push_back(winnerBracket[i]);
+            }
+            winnerBracket = temporaire;
+        }
+>>>>>>> Stashed changes
 }
 
 
 int main(){
     vector<string> winnerBracket;
     vector<string> loserBracket;
+<<<<<<< Updated upstream
     vector<string> participants;
 
     cout << "paf" << endl;
-    for (unsigned int i = 0; i > 64; i++){
+
+    for (unsigned int i = 0; i < 64; i++){
         participants.push_back(litUneString());
     }
 
-    for (unsigned int i = 0; i > 6; i++){
-        tourWinnerBracket(winnerBracket, loserBracket);
-        tourLoserBracket(loserBracket);
-        if (loserBracket.size() >= 2)
+    for (unsigned int i = 5; i > 0; i--){
+        for (int j = 0; j < pow(2, i); j++){
+            tourWinnerBracket(winnerBracket, loserBracket);
             tourLoserBracket(loserBracket);
+            if (loserBracket.size() >= 2)
+                tourLoserBracket(loserBracket);
+        }
 
+    }
+
+    for(unsigned int i = 0; i < 16; i++){
+        participant joueur = (litUneString(), litUnEntier(), litUnEntier(), litUnEntier());
+        joueurs[i] = joueur;
     }
 
 
@@ -164,4 +249,16 @@ int main(){
     cout << grandVainqueur << " est le vainqueur" << endl;
     return 0;
 
+=======
+    for (unsigned int i = 0; i < 64; i++){
+        string joueur;
+        cin >> joueur;
+        winnerBracket.push_back(joueur);
+    }
+
+
+
+
+    return 0;
+>>>>>>> Stashed changes
 }
