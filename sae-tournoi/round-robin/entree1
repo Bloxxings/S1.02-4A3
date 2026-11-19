@@ -1,0 +1,359 @@
+&& Système de classement round-robin avec 3 mini-jeux (pierre feuille ciseaux, pile ou face, lancé de dé)
+&& Chaque joueur affrontera tous les autres joueurs une fois seulement
+8
+Adam
+Anas
+Ilyesse
+Sofia
+Nasser
+Loan
+Sinda
+Akim
+260
+&& Jeu 1 : pierre feuille ciseaux (0 pierre, 1 feuille, 2 ciseaux, meme resultat = match nul, le match recommence)
+&& Adam vs Anas
+1
+1
+2
+2
+2
+1
+&& Adam vs Ilyesse
+0
+1
+&& Adam vs Sofia
+0
+1
+&& Adam vs Nasser
+1
+1
+2
+1
+&& Adam vs Loan
+2
+2
+0
+2
+&& Adam vs Sinda
+0
+2
+&& Adam vs Akim
+2
+0
+&& Anas vs Ilyesse
+1
+1
+0
+1
+&& Anas vs Sofia
+0
+0
+2
+0
+&& Anas vs Nasser
+0
+2
+&& Anas vs Loan
+2
+1
+&& Anas vs Sinda
+2
+1
+&& Anas vs Akim
+0
+0
+0
+2
+&& Ilyesse vs Sofia
+2
+0
+&& Ilyesse vs Nasser
+0
+1
+&& Ilyesse vs Loan
+1
+0
+&& Ilyesse vs Sinda
+2
+1
+&& Ilyesse vs Akim
+0
+2
+&& Sofia vs Nasser
+1
+2
+&& Sofia vs Loan
+2
+0
+&& Sofia vs Sinda
+2
+0
+&& Sofia vs Akim
+2
+0
+&& Nasser vs Loan
+2
+0
+&& Nasser vs Sinda
+1
+2
+&& Nasser vs Akim
+1
+2
+&& Loan vs Sinda
+2
+1
+&& Loan vs Akim
+1
+2
+&& Sinda vs Akim
+1
+2
+&& Jeu 2 : pile ou face (0 pile, 1 face, celui qui a pile gagne, même reponse c'est match nul et on refait)
+&& Adam vs Anas
+0
+0
+0
+1
+&& Adam vs Ilyesse
+1
+1
+1
+1
+0
+1
+&& Adam vs Sofia
+0
+1
+&& Adam vs Nasser
+1
+1
+0
+0
+1
+1
+0
+0
+0
+1
+&& Adam vs Loan
+0
+1
+&& Adam vs Sinda
+0
+0
+0
+0
+0
+1
+&& Adam vs Akim
+0
+1
+&& Anas vs Ilyesse
+1
+1
+1
+0
+&& Anas vs Sofia
+1
+1
+0
+1
+&& Anas vs Nasser
+1
+1
+1
+1
+0
+0
+1
+1
+0
+0
+0
+0
+1
+1
+0
+0
+0
+0
+0
+0
+1
+0
+&& Anas vs Loan
+0
+1
+&& Anas vs Sinda
+1
+0
+&& Anas vs Akim
+0
+1
+&& Ilyesse vs Sofia
+1
+1
+1
+1
+0
+1
+&& Ilyesse vs Nasser
+1
+0
+&& Ilyesse vs Loan
+1
+1
+1
+0
+&& Ilyesse vs Sinda
+1
+1
+0
+0
+0
+0
+1
+1
+0
+0
+0
+1
+&& Ilyesse vs Akim
+1
+0
+&& Sofia vs Nasser
+1
+0
+&& Sofia vs Loan
+1
+1
+0
+1
+&& Sofia vs Sinda
+0
+1
+&& Sofia vs Akim
+1
+1
+0
+0
+0
+0
+0
+0
+1
+0
+&& Nasser vs Loan
+1
+0
+&& Nasser vs Sinda
+1
+0
+&& Nasser vs Akim
+1
+1
+1
+0
+&& Loan vs Sinda
+0
+1
+&& Loan vs Akim
+0
+0
+1
+1
+1
+0
+&& Sinda vs Akim
+1
+0
+&& Jeu 3 : lancer de de (chiffre de 1 a 6, le plus grand gagne, meme chiffre on refait car match nul)
+&& Adam vs Anas
+6
+1
+&& Adam vs Ilyesse
+6
+3
+&& Adam vs Sofia
+3
+6
+&& Adam vs Nasser
+2
+6
+&& Adam vs Loan
+6
+6
+4
+3
+&& Adam vs Sinda
+2
+1
+&& Adam vs Akim
+2
+4
+&& Anas vs Ilyesse
+5
+4
+&& Anas vs Sofia
+4
+2
+&& Anas vs Nasser
+1
+6
+&& Anas vs Loan
+5
+3
+&& Anas vs Sinda
+4
+2
+&& Anas vs Akim
+3
+1
+&& Ilyesse vs Sofia
+2
+1
+&& Ilyesse vs Nasser
+3
+3
+3
+2
+&& Ilyesse vs Loan
+6
+4
+&& Ilyesse vs Sinda
+3
+2
+&& Ilyesse vs Akim
+5
+2
+&& Sofia vs Nasser
+5
+6
+&& Sofia vs Loan
+3
+2
+&& Sofia vs Sinda
+5
+4
+&& Sofia vs Akim
+4
+5
+&& Nasser vs Loan
+5
+6
+&& Nasser vs Sinda
+2
+4
+&& Nasser vs Akim
+4
+1
+&& Loan vs Sinda
+2
+4
+&& Loan vs Akim
+5
+6
+&& Sinda vs Akim
+4
+5

@@ -1,0 +1,186 @@
+&& Système de classement round-robin avec 3 mini-jeux (pierre feuille ciseaux, pile ou face, lancé de dé)
+&& Chaque joueur affrontera tous les autres joueurs une fois seulement
+6
+Maxime
+Iklil
+Claire
+Evan
+Kylian
+Enzo
+128
+&& Jeu 1 : pierre feuille ciseaux (0 pierre, 1 feuille, 2 ciseaux, meme resultat = match nul, le match recommence)
+&& Maxime vs Iklil
+1
+2
+&& Maxime vs Claire
+1
+1
+0
+0
+2
+0
+&& Maxime vs Evan
+1
+2
+&& Maxime vs Kylian
+1
+2
+&& Maxime vs Enzo
+0
+1
+&& Iklil vs Claire
+2
+2
+2
+0
+&& Iklil vs Evan
+2
+1
+&& Iklil vs Kylian
+0
+2
+&& Iklil vs Enzo
+1
+2
+&& Claire vs Evan
+1
+0
+&& Claire vs Kylian
+0
+0
+0
+0
+0
+2
+&& Claire vs Enzo
+2
+0
+&& Evan vs Kylian
+2
+1
+&& Evan vs Enzo
+2
+0
+&& Kylian vs Enzo
+1
+0
+&& Jeu 2 : pile ou face (0 pile, 1 face, celui qui a pile gagne, même reponse c'est match nul et on refait)
+&& Maxime vs Iklil
+0
+1
+&& Maxime vs Claire
+0
+1
+&& Maxime vs Evan
+0
+1
+&& Maxime vs Kylian
+1
+1
+0
+0
+0
+1
+&& Maxime vs Enzo
+0
+1
+&& Iklil vs Claire
+1
+0
+&& Iklil vs Evan
+0
+0
+1
+0
+&& Iklil vs Kylian
+0
+0
+0
+0
+1
+0
+&& Iklil vs Enzo
+0
+0
+0
+0
+1
+0
+&& Claire vs Evan
+1
+0
+&& Claire vs Kylian
+1
+0
+&& Claire vs Enzo
+0
+0
+0
+0
+0
+1
+&& Evan vs Kylian
+0
+1
+&& Evan vs Enzo
+0
+0
+1
+0
+&& Kylian vs Enzo
+0
+0
+1
+0
+&& Jeu 3 : lancer de de (chiffre de 1 a 6, le plus grand gagne, meme chiffre on refait car match nul)
+&& Maxime vs Iklil
+3
+1
+&& Maxime vs Claire
+5
+3
+&& Maxime vs Evan
+4
+2
+&& Maxime vs Kylian
+4
+2
+&& Maxime vs Enzo
+5
+6
+&& Iklil vs Claire
+1
+4
+&& Iklil vs Evan
+5
+3
+&& Iklil vs Kylian
+1
+4
+&& Iklil vs Enzo
+1
+2
+&& Claire vs Evan
+2
+4
+&& Claire vs Kylian
+3
+3
+1
+3
+&& Claire vs Enzo
+6
+3
+&& Evan vs Kylian
+1
+5
+&& Evan vs Enzo
+1
+1
+4
+5
+&& Kylian vs Enzo
+4
+4
+3
+6
