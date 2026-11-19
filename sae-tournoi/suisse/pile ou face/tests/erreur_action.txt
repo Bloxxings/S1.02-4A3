@@ -1,4 +1,0 @@
-# Test d'erreur : choix incorrect
-Joueur:Alice
-Joueur:Bilal
-Action de Alice: Peut-être
