@@ -1,25 +1,12 @@
-CLASSEMENTS PAR JEU
-
-Pierre-feuille-ciseaux :
-1:Adam O - 3 points
-2:Adam K - 3 points
-3:Tony - 3 points
-4:Ilyess - 3 points
-
-Des :
-1:Adam O - 3 points
-2:Adam K - 3 points
-3:Tony - 3 points
-4:Ilyess - 3 points
-
-Pile ou face :
-1:Adam O - 3 points
-2:Adam K - 3 points
-3:Tony - 3 points
-4:Ilyess - 3 points
-
-CLASSEMENT GENERAL (points PFC + Des + Pile ou face) :
-1:Adam O - 9 points
-2:Adam K - 9 points
-3:Tony - 9 points
-4:Ilyess - 9 points
+1:Adam O
+2:Adam K
+3:Tony
+4:Ilyess
+1:Adam O
+2:Adam K
+3:Tony
+4:Ilyess
+1:Adam O
+2:Adam K
+3:Tony
+4:Ilyess
