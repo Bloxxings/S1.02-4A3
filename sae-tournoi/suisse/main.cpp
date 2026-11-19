@@ -3,8 +3,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <limits>
-#include <set>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -14,6 +12,7 @@ struct Joueur { string nom; int points = 0; int victoires = 0; };
 struct Action { string nom; int choix; };
 enum Jeu { PFC, DES, PILE_FACE };
 
+// cebqu'in lit dans le fichier pour un jeu :joueurs,actions et les tirages de pièce
 struct Tournoi {
     Jeu jeu = PFC;
     bool jeuLu = false;
@@ -22,272 +21,212 @@ struct Tournoi {
     vector<int> resultats;
 };
 
-string nettoyer(const string& s) {
+// Enlève les espaces et les tabulations au début et à la fin d'un texte
+string enleverEspaces(const string& s) {
     size_t debut = s.find_first_not_of(" \t\r\n");
     if (debut == string::npos) return "";
     return s.substr(debut, s.find_last_not_of(" \t\r\n") - debut + 1);
 }
 
-string minuscules(string s) {
+// Met un texte en minuscules
+string enMinuscules(string s) {
     transform(s.begin(), s.end(), s.begin(),
               [](unsigned char c) { return static_cast<char>(tolower(c)); });
     return s;
 }
 
-bool lireJeu(const string& texte, Jeu& jeu) {
-    string valeur = minuscules(nettoyer(texte));
-    if (valeur == "pfc" || valeur == "pierre-feuille-ciseaux") jeu = PFC;
-    else if (valeur == "des" || valeur == "dés") jeu = DES;
+// pour lire le type de jeu écrit après jeu
+void lireTypeDeJeu(const string& texte, Jeu& jeu) {
+    string valeur = enMinuscules(enleverEspaces(texte));
+    if (valeur == "des" || valeur == "dés") jeu = DES;
     else if (valeur == "pileface" || valeur == "pile-face") jeu = PILE_FACE;
-    else return false;
-    return true;
+    else jeu = PFC;
 }
 
-bool lireChoix(Jeu jeu, const string& texte, int& choix) {
-    string valeur = minuscules(nettoyer(texte));
-    if (jeu == PFC) {
-        if (valeur == "pierre") choix = 0;
-        else if (valeur == "feuille") choix = 1;
-        else if (valeur == "ciseaux") choix = 2;
-        else return false;
-        return true;
-    }
-    if (jeu == PILE_FACE) {
-        if (valeur == "pile") choix = 0;
-        else if (valeur == "face") choix = 1;
-        else return false;
-        return true;
-    }
-    istringstream flux(valeur);
-    string reste;
-    return (flux >> choix) && !(flux >> reste) && choix >= 1 && choix <= 6;
+// choix -->  pierre 0, feuille 1, ciseaux 2 / pile 0, face 1 / dé 1 à 6
+void lireChoix(Jeu jeu, const string& texte, int& choix) {
+    string valeur = enMinuscules(enleverEspaces(texte));
+    if (jeu == PFC) choix = valeur == "pierre" ? 0 : (valeur == "feuille" ? 1 : 2);
+    else if (jeu == PILE_FACE) choix = valeur == "pile" ? 0 : 1;
+    else choix = stoi(valeur);
 }
 
-int resultatPFC(int a, int b) {
+// Renvoie 1 si a gagne, -1 si b gagne, 0 si égalité
+int gagnantPFC(int a, int b) {
     if (a == b) return 0;
     if ((a == 0 && b == 2) || (a == 1 && b == 0) || (a == 2 && b == 1)) return 1;
     return -1;
 }
 
-bool traiterLigne(Tournoi& t, const string& ligne) {
+// Lit une ligne du fichier et la range
+void lireUneLigne(Tournoi& t, const string& ligne) {
     if (ligne.rfind("Joueur:", 0) == 0) {
-        string nom = nettoyer(ligne.substr(7));
-        if (nom.empty()) { cerr << "Erreur : nom de joueur vide.\n"; return false; }
-        t.joueurs.push_back({nom, 0, 0});
+        t.joueurs.push_back({enleverEspaces(ligne.substr(7)), 0, 0});
     } else if (ligne.rfind("Action de ", 0) == 0) {
         size_t deuxPoints = ligne.find(':', 10);
         int choix;
-        if (deuxPoints == string::npos || !lireChoix(t.jeu, ligne.substr(deuxPoints + 1), choix)) {
-            cerr << "Erreur : action invalide pour le jeu choisi.\n";
-            return false;
-        }
-        t.actions.push_back({nettoyer(ligne.substr(10, deuxPoints - 10)), choix});
+        lireChoix(t.jeu, ligne.substr(deuxPoints + 1), choix);
+        t.actions.push_back({enleverEspaces(ligne.substr(10, deuxPoints - 10)), choix});
     } else if (ligne.rfind("Resultat:", 0) == 0 && t.jeu == PILE_FACE) {
         int resultat;
-        if (!lireChoix(PILE_FACE, ligne.substr(9), resultat)) {
-            cerr << "Erreur : Resultat doit être Pile ou Face.\n";
-            return false;
-        }
+        lireChoix(PILE_FACE, ligne.substr(9), resultat);
         t.resultats.push_back(resultat);
-    } else {
-        cerr << "Erreur : ligne inconnue : " << ligne << '\n';
-        return false;
     }
-    return true;
 }
 
-bool calculerTournoi(Tournoi& t, vector<vector<Joueur>>& classements) {
+// cette fonction est pour jouer les 3 rondes du système suisse, puis ajouter le classement final du jeu à "classements"
+void jouerTournoi(Tournoi& t, vector<vector<Joueur>>& classements) {
     vector<Joueur>& joueurs = t.joueurs;
-    if (joueurs.size() < 2 || joueurs.size() % 2 != 0) {
-        cerr << "Erreur : il faut un nombre pair de joueurs, au moins deux.\n";
-        return false;
-    }
-    set<string> noms;
-    for (const Joueur& joueur : joueurs) {
-        if (!noms.insert(joueur.nom).second) {
-            cerr << "Erreur : deux joueurs ont le même nom dans un tournoi.\n";
-            return false;
-        }
-    }
-
+    // dejaJoue[a][b] vaut true si les joueurs a et b se sont déjà affrontés
     vector<vector<bool>> dejaJoue(joueurs.size(), vector<bool>(joueurs.size(), false));
+    // Position de la prochaine action et du prochain tirage à lire dans les listes
     size_t prochaineAction = 0, prochainResultat = 0;
+    // 3 rondes
     for (int ronde = 1; ronde <= 3; ronde++) {
+        // On range les num des joueurs du plus au moins de pts
         vector<int> ordre;
         for (int i = 0; i < static_cast<int>(joueurs.size()); i++) ordre.push_back(i);
-        stable_sort(ordre.begin(), ordre.end(), [&](int a, int b) {
-            return joueurs[a].points > joueurs[b].points;
+        sort(ordre.begin(), ordre.end(), [&](int a, int b) {
+            if (joueurs[a].points != joueurs[b].points) return joueurs[a].points > joueurs[b].points;
+            return a < b;   // si égalité, on garde l'ordre de départ
         });
+        // dejaApparie : les joueurs déjà placés dans une paire pendant cette ronde
         vector<bool> dejaApparie(joueurs.size(), false);
-
+        // Pour chaque joueur pas encore apparié, on lui cherche un adversaire
         for (int a : ordre) {
             if (dejaApparie[a]) continue;
+            // Adversaire = c'est celui dont les pts sont les plus proches parmi ceux qu'on n'a pas déjà affrontés
             int b = -1, meilleurEcart = numeric_limits<int>::max();
             for (int candidat : ordre) {
                 if (candidat == a || dejaApparie[candidat] || dejaJoue[a][candidat]) continue;
                 int ecart = abs(joueurs[a].points - joueurs[candidat].points);
                 if (ecart < meilleurEcart) { meilleurEcart = ecart; b = candidat; }
             }
+            // Si on a déjà affronté tout le monde : revanche contre le premier joueur libre
             if (b == -1) {
                 for (int candidat : ordre)
                     if (candidat != a && !dejaApparie[candidat]) { b = candidat; break; }
             }
-            if (b == -1) { cerr << "Erreur : aucun adversaire disponible.\n"; return false; }
+            // Mtn deux joueurs sont dans une paire
             dejaApparie[a] = dejaApparie[b] = true;
-            if (prochaineAction + 1 >= t.actions.size()) {
-                cerr << "Erreur : actions manquantes.\n";
-                return false;
-            }
+            // On lit les actions des deux joueurs, dans l'ordre du fichier ttxt
             const Action& x = t.actions[prochaineAction++];
             const Action& y = t.actions[prochaineAction++];
-            if (x.nom != joueurs[a].nom || y.nom != joueurs[b].nom) {
-                cerr << "Erreur : actions attendues pour " << joueurs[a].nom
-                     << " et " << joueurs[b].nom << ".\n";
-                return false;
-            }
-
+            // Pile ou face : on lit aussi le tirage de la pièce
             int resultatPiece = -1;
-            if (t.jeu == PILE_FACE) {
-                if (prochainResultat >= t.resultats.size()) {
-                    cerr << "Erreur : résultat de lancer manquant.\n";
-                    return false;
-                }
-                resultatPiece = t.resultats[prochainResultat++];
-            }
+            if (t.jeu == PILE_FACE) resultatPiece = t.resultats[prochainResultat++];
+            // gagnant : 1 si a gagne, -1 si b gagne, 0 si égalité
             int gagnant;
-            if (t.jeu == PFC) gagnant = resultatPFC(x.choix, y.choix);
+            if (t.jeu == PFC) gagnant = gagnantPFC(x.choix, y.choix);
             else if (t.jeu == DES) gagnant = x.choix > y.choix ? 1 : (x.choix < y.choix ? -1 : 0);
             else {
+                // Pile ou face : celui qui devine juste gagne. si les deux ont le mm choix : égalité
                 bool xJuste = x.choix == resultatPiece;
                 bool yJuste = y.choix == resultatPiece;
                 gagnant = xJuste == yJuste ? 0 : (xJuste ? 1 : -1);
             }
+            // Victoire = 3 points et une victoire de plus. Égalité = 1 point chacun
             if (gagnant == 1) { joueurs[a].points += 3; joueurs[a].victoires++; }
             else if (gagnant == -1) { joueurs[b].points += 3; joueurs[b].victoires++; }
             else { joueurs[a].points++; joueurs[b].points++; }
+            // noter et enregistrer  que a et b se sont affrontés
             dejaJoue[a][b] = dejaJoue[b][a] = true;
         }
     }
-
-    if (prochaineAction != t.actions.size() || prochainResultat != t.resultats.size()) {
-        cerr << "Erreur : trop d'actions ou de résultats.\n";
-        return false;
-    }
+    // Classement final du jeu; points, victoires, et par ordre de départ
     vector<int> classement;
     for (int i = 0; i < static_cast<int>(joueurs.size()); i++) classement.push_back(i);
-    stable_sort(classement.begin(), classement.end(), [&](int a, int b) {
+    sort(classement.begin(), classement.end(), [&](int a, int b) {
         if (joueurs[a].points != joueurs[b].points) return joueurs[a].points > joueurs[b].points;
-        return joueurs[a].victoires > joueurs[b].victoires;
+        if (joueurs[a].victoires != joueurs[b].victoires) return joueurs[a].victoires > joueurs[b].victoires;
+        return a < b;
     });
+    // On range les joueurs dans cet ordre et on garde le classement du jeu
     vector<Joueur> joueursClasses;
     for (int indice : classement) joueursClasses.push_back(joueurs[indice]);
     classements.push_back(joueursClasses);
-    return true;
 }
 
-string nomJeu(Jeu jeu) {
+// Le nom du jeu à afficher
+string nomDuJeu(Jeu jeu) {
     if (jeu == PFC) return "Pierre-feuille-ciseaux";
     if (jeu == DES) return "Des";
     return "Pile ou face";
 }
 
-struct JoueurGlobal {
+// Un joueur avec ses points dans chacun des 3 jeux pour le classement général ensuite
+struct JoueurTotal {
     string nom;
     int pointsPFC = 0;
     int pointsDes = 0;
     int pointsPileFace = 0;
     int victoires = 0;
+    int place = 0;   // rang dans le premier jeu, pour départager
     int total() const { return pointsPFC + pointsDes + pointsPileFace; }
 };
 
+// Le programme : 1) on lit le fichier  2) on joue chaque jeu et on affiche son classement  3) on affiche le classement général
 int main() {
     Tournoi tournoi;
     vector<vector<Joueur>> classements;
     vector<Jeu> jeux;
-    bool auMoinsUnTournoi = false;
     string ligne;
+    // 1) Lecture du fichier ligne par ligne
     while (getline(cin, ligne)) {
-        ligne = nettoyer(ligne);
+        ligne = enleverEspaces(ligne);
+        // ignorer les lignes vides et les commentaires qui commencent par #
         if (ligne.empty() || ligne[0] == '#') continue;
+        // Nouvelle ligne "Jeu:" : on joue le jeu précédent (s'il y en a un), puis on en commence un nouveau
         if (ligne.rfind("Jeu:", 0) == 0) {
             if (tournoi.jeuLu) {
-                if (!calculerTournoi(tournoi, classements)) return 1;
+                jouerTournoi(tournoi, classements);
                 jeux.push_back(tournoi.jeu);
                 tournoi = Tournoi();
             }
-            if (!lireJeu(ligne.substr(4), tournoi.jeu)) {
-                cerr << "Erreur : jeu invalide après Jeu:.\n";
-                return 1;
-            }
+            lireTypeDeJeu(ligne.substr(4), tournoi.jeu);
             tournoi.jeuLu = true;
-            auMoinsUnTournoi = true;
         } else {
-            if (!tournoi.jeuLu) {
-                cerr << "Erreur : chaque bloc doit commencer par Jeu:.\n";
-                return 1;
-            }
-            if (!traiterLigne(tournoi, ligne)) return 1;
+            lireUneLigne(tournoi, ligne);
         }
     }
-    if (!auMoinsUnTournoi) {
-        cerr << "Erreur : le fichier doit contenir au moins un bloc Jeu:.\n";
-        return 1;
-    }
-    if (!calculerTournoi(tournoi, classements)) return 1;
+    // On joue le dernier jeu du fichier
+    jouerTournoi(tournoi, classements);
     jeux.push_back(tournoi.jeu);
-
-    if (jeux.size() != 3) {
-        cerr << "Erreur : il faut un bloc pour chacun des trois jeux.\n";
-        return 1;
+    // Classement général : on part des joueurs dans l'ordre du premier jeu
+    vector<JoueurTotal> global;
+    for (size_t i = 0; i < classements[0].size(); i++) {
+        JoueurTotal g;
+        g.nom = classements[0][i].nom;
+        g.place = i;
+        global.push_back(g);
     }
-    vector<bool> jeuPresent(3, false);
-    for (Jeu jeu : jeux) {
-        if (jeuPresent[jeu]) {
-            cerr << "Erreur : chaque jeu doit apparaître une seule fois.\n";
-            return 1;
-        }
-        jeuPresent[jeu] = true;
-    }
-
-    vector<string> noms;
-    for (const Joueur& joueur : classements[0]) noms.push_back(joueur.nom);
-    vector<JoueurGlobal> global;
-    for (const string& nom : noms) global.push_back({nom});
-
+    // 2) j'affiche le classement de chaque jeu et je note les points de chaque joueur a coté
     cout << "CLASSEMENTS PAR JEU\n";
     for (size_t bloc = 0; bloc < jeux.size(); bloc++) {
-        cout << "\n" << nomJeu(jeux[bloc]) << " :\n";
+        cout << "\n" << nomDuJeu(jeux[bloc]) << " :\n";
         for (size_t rang = 0; rang < classements[bloc].size(); rang++) {
             const Joueur& joueur = classements[bloc][rang];
             cout << rang + 1 << ":" << joueur.nom << " - " << joueur.points << " points\n";
-            auto trouve = find_if(global.begin(), global.end(), [&](const JoueurGlobal& g) {
+            // On retrouve ce joueur dans le classement général (je recherche par son nom)
+            auto trouve = find_if(global.begin(), global.end(), [&](const JoueurTotal& g) {
                 return g.nom == joueur.nom;
             });
-            if (trouve == global.end()) {
-                cerr << "Erreur : les joueurs doivent être identiques pour les trois jeux.\n";
-                return 1;
-            }
             if (jeux[bloc] == PFC) trouve->pointsPFC = joueur.points;
             else if (jeux[bloc] == DES) trouve->pointsDes = joueur.points;
             else trouve->pointsPileFace = joueur.points;
             trouve->victoires += joueur.victoires;
         }
     }
-
-    for (const auto& partie : classements) {
-        if (partie.size() != global.size()) {
-            cerr << "Erreur : les joueurs doivent être identiques pour les trois jeux.\n";
-            return 1;
-        }
-    }
-    stable_sort(global.begin(), global.end(), [](const JoueurGlobal& a, const JoueurGlobal& b) {
+    // ranger le classement général : total des points, victoires et place dans le premier jeu
+    sort(global.begin(), global.end(), [](const JoueurTotal& a, const JoueurTotal& b) {
         if (a.total() != b.total()) return a.total() > b.total();
-        return a.victoires > b.victoires;
+        if (a.victoires != b.victoires) return a.victoires > b.victoires;
+        return a.place < b.place;
     });
-
+    // 3) Affichage du classement général
     cout << "\nCLASSEMENT GENERAL (points PFC + Des + Pile ou face) :\n";
     for (size_t rang = 0; rang < global.size(); rang++) {
-        const JoueurGlobal& joueur = global[rang];
+        const JoueurTotal& joueur = global[rang];
         cout << rang + 1 << ":" << joueur.nom << " - " << joueur.total()
              << " points\n";
     }
