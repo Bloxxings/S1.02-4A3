@@ -119,7 +119,6 @@ void tourLoserBracket(vector<string> & loserBracket) {
     vector<string> gagnantsAuTour;
 
     for (size_t i = 0; i + 1 < loserBracket.size(); i += 2) {
-    for (size_t i = 0; i + 1 < loserBracket.size(); i += 2) {
         string j1 = loserBracket[i];
         string j2 = loserBracket[i + 1];
         string gagnant = jouerBO3(j1, j2);
@@ -129,38 +128,24 @@ void tourLoserBracket(vector<string> & loserBracket) {
     if (loserBracket.size() % 2 == 1) {
         gagnantsAuTour.push_back(loserBracket.back());
     }
-    if (loserBracket.size() % 2 == 1) {
-        perdantsAuTour.push_back(loserBracket.back());
-    }
-    loserBracket = perdantsAuTour;
+
     loserBracket = gagnantsAuTour;
 }
-
-int main() {
 
 int main(){
     vector<string> winnerBracket;
     vector<string> loserBracket;
 
-    for (unsigned int i = 0; i < 64; i++) {
+    for (unsigned int i = 0; i < 64; i++) 
         winnerBracket.push_back(litUneString());
-    for (unsigned int i = 0; i < 64; i++) {
-        winnerBracket.push_back(litUneString());
-    }
+    
 
-    for (unsigned int i = 0; i < 6; i++) {
     for (unsigned int i = 0; i < 6; i++) {
         tourWinnerBracket(winnerBracket, loserBracket);
         if (loserBracket.size() >= 2) {
-        if (loserBracket.size() >= 2) {
             tourLoserBracket(loserBracket);
         }
-        }
     }
-    while (loserBracket.size() > 1) {
-        tourLoserBracket(loserBracket);
-    }
-
     while (loserBracket.size() > 1) {
         tourLoserBracket(loserBracket);
     }

@@ -10,7 +10,7 @@ string litUneString () //fonction pour lire les lignes du doc entrée
     while (true)  //tant qu'on a pas finis de parcourir la fin du fichier/arrivés a un element inattendu
     {
         getline(cin, uneChaine);
-        if ((!cin) || (uneChaine.substr(0,2) != "&&")) break; //si le commentaire commence par & ou si l'entrée est inattendue, on sors de la boucle
+        if ((!cin) || (uneChaine.substr(0,2) != "//")) break; //si le commentaire commence par & ou si l'entrée est inattendue, on sors de la boucle
     }
     return uneChaine; //la fonction renvoie une chaine
 }
@@ -21,7 +21,7 @@ int litUnEntier () //fonction pour lire un entier en évitant les commentaires c
     while (true) //tant qu'on a pas finis de parcourir la fin du fichier/on arrive a un element inattendu
     {
         getline(cin, uneChaine);
-        if ((!cin) || (uneChaine.substr(0,2) != "&&")) break; //si le commentaire ne commence pas par & ou si l'entrée est inattendue, on sors de la boucle
+        if ((!cin) || (uneChaine.substr(0,2) != "//")) break; //si le commentaire ne commence pas par & ou si l'entrée est inattendue, on sors de la boucle
     }
     return stoi(uneChaine); //convertit la chaine en entier et la renvoie
 }
